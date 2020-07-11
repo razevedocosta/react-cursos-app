@@ -1,14 +1,14 @@
 import React from 'react';
+import LinkWrapper from './LinkWrapper';
 
 const Header = () => {
     return (
         <nav>
             <div class="nav-wrapper indigo lighten-2">
-                <a href="/" class="brand-logo">Meus Cursos</a>
+                <LinkWrapper to="/" className="brand-logo">Meus Cursos</LinkWrapper>
                 <ul class="right">
-                    <li><a href="/curso">Curso</a></li>
-                    <li><a href="/categoria">Categoria</a></li>
-                    <li><a href="/cargaHoraria">Carga Horária</a></li>
+                    <li><LinkWrapper to="/categorias">Categorias</LinkWrapper></li>
+                    <li><LinkWrapper to="/sobre">Sobre</LinkWrapper></li>
                 </ul>
             </div>
       </nav>

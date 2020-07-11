@@ -5,6 +5,7 @@ import './App.css';
 import Header from './Header';
 import Tabela from './Tabela';
 import Form from './Formulario';
+import PopUp from './PopUp';
 
 class App extends Component{
 
@@ -47,11 +48,14 @@ class App extends Component{
         }),
       }
     );
+
+    PopUp.exibeMensagem('error', "Curso removido com sucesso");
   }
 
   // método para receber o curso e seta o estado do componente utilizando spread operator
   escutadorDeSubmit = curso => {
-    this.setState({ cursos:[...this.state.cursos, curso]})
+    this.setState({ cursos:[...this.state.cursos, curso]});
+    PopUp.exibeMensagem('success', "Curso adicionado com sucesso");
   }
 
   render(){
@@ -60,6 +64,7 @@ class App extends Component{
         <Header />
 
         <div className="container mb-10">
+          <h3>Cursos</h3>
           <Form escutadorDeSubmit={this.escutadorDeSubmit}/>
           
           <Tabela cursos = { this.state.cursos } removeCurso = {this.removeCurso} />

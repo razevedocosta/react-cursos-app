@@ -2,11 +2,11 @@ import React, { Component, Fragment } from 'react';
 import 'materialize-css/dist/css/materialize.min.css';
 import './App.css';
 
-import Header from './Header';
-import Tabela from './Tabela';
-import Form from './Formulario';
-import PopUp from './PopUp';
-import ApiService from './ApiService';
+import Header from '../../Components/Header/Header';
+import Tabela from '../../Components/Tabela/Tabela';
+import Form from '../../Components/Formulario/Formulario';
+import PopUp from '../../Utils/PopUp';
+import ApiService from '../../Utils/ApiService';
 
 class App extends Component{
 
@@ -26,28 +26,31 @@ class App extends Component{
 
     const { cursos } = this.state;
 
-    this.setState( 
-      {
-        cursos : cursos.filter((nome) => {
-          // remove quando o index da interação for igual ao index da lista
-          return nome.id !== id;
-        }),
-      }
-    );
+    const cursosAtualizado = cursos.filter(curso =>{
+      return curso.id !== id
+    });
 
-    PopUp.exibeMensagem('error', "Curso removido com sucesso");
-    ApiService.RemoveCurso(id);
+    ApiService.RemoveCurso(id)
+      .then(res => {
+        if (res.message === 'deleted') {
+          this.setState({cursos : [...cursosAtualizado]})
+          PopUp.exibeMensagem('error', "Curso removido com sucesso");
+        }
+      })
+      .catch(err =>PopUp.exibeMensagem('error', "Erro na comunicação com a API ao tentar remover o curso"));
   }
 
   // método para receber o curso e seta o estado do componente utilizando spread operator
   escutadorDeSubmit = curso => {
 
     ApiService.CriaCurso(JSON.stringify(curso))
-    .then(res => res.data)
-    .then(curso => {
-      this.setState({ cursos:[...this.state.cursos, curso]});
-      PopUp.exibeMensagem('success', "Curso adicionado com sucesso");
-    });
+    .then(res => {
+      if (res.message === 'success') {
+        this.setState({ cursos:[...this.state.cursos, curso]});
+        PopUp.exibeMensagem('success', "Curso adicionado com sucesso");
+      }
+    })
+    .catch(err =>PopUp.exibeMensagem('error', "Erro na comunicação com a API ao tentar criar o curso"));
     
   }
 
@@ -56,8 +59,11 @@ class App extends Component{
   componentDidMount(){
     ApiService.ListaCurso()
       .then(res => {
+        if (res.message === 'success') {
           this.setState({cursos: [...this.state.cursos, ...res.data]})
-      });
+        }
+      })
+      .catch(err =>PopUp.exibeMensagem('error', "Erro na comunicação com a API ao tentar listar os cursos"));
   }
 
   render(){

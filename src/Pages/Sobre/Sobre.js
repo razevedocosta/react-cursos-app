@@ -1,14 +1,14 @@
 import React, { Fragment } from 'react';
-import Header from './Header';
+import Header from '../../Components/Header/Header';
 
-const NotFound = () =>{
+const Sobre = () =>{
 
     return (
         <Fragment>
             <Header />
-            <h1>Página Não Encontrada</h1>
+            <h1>Sobre</h1>
         </Fragment> 
     );
 }
 
-export default NotFound;
+export default Sobre;

@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import App from './Pages/Home/App';
 import * as serviceWorker from './serviceWorker';
 
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
-import Categorias from './Categorias';
-import Sobre from './Sobre';
-import NotFound from './NotFound';
+import Categorias from './Pages/Categorias/Categorias';
+import Sobre from './Pages/Sobre/Sobre';
+import NotFound from './Pages/NotFound/NotFound';
 
 ReactDOM.render(
   <BrowserRouter>

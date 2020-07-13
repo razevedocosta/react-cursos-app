@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import Header from './Header';
-import DataTable from './Datatable.js';
+import Header from '../../Components/Header/Header';
+import DataTable from '../../Components/Datatable/Datatable.js';
 
 class Autores extends Component {
     constructor(props) {

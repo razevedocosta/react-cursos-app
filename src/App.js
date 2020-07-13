@@ -6,59 +6,65 @@ import Header from './Header';
 import Tabela from './Tabela';
 import Form from './Formulario';
 import PopUp from './PopUp';
+import ApiService from './ApiService';
 
 class App extends Component{
 
-  state = {
+  constructor(props) {
+    super(props);
 
-    cursos: [
-      {
-        nome: 'Introdução a React',
-        categoria: 'React',
-        cargaHoraria: '6'
-      },
-      {
-        nome: 'Visualização da Dados com Python',
-        categoria: 'Data Science',
-        cargaHoraria: '10'
-      },
-      {
-        nome: 'Criando uma página html',
-        categoria: 'Programação Web',
-        cargaHoraria: '10'
-      },
-      {
-        nome: 'Utilizando Selenium com Eclipse',
-        categoria: 'Testes',
-        cargaHoraria: '20'
-      }
-    ],
-  };
+    this.state = {
+
+      // listagem de cursos carrega a partir da api
+      cursos: [],
+      
+    };
+  }  
 
   // método para remover um curso da listagem
-  removeCurso = index => {
+  removeCurso = id => {
 
     const { cursos } = this.state;
 
     this.setState( 
       {
-        cursos : cursos.filter((nome, posAtual) => {
+        cursos : cursos.filter((nome) => {
           // remove quando o index da interação for igual ao index da lista
-          return posAtual !== index;
+          return nome.id !== id;
         }),
       }
     );
 
     PopUp.exibeMensagem('error', "Curso removido com sucesso");
+    ApiService.RemoveCurso(id);
   }
 
   // método para receber o curso e seta o estado do componente utilizando spread operator
   escutadorDeSubmit = curso => {
-    this.setState({ cursos:[...this.state.cursos, curso]});
-    PopUp.exibeMensagem('success', "Curso adicionado com sucesso");
+
+    ApiService.CriaCurso(JSON.stringify(curso))
+    .then(res => res.data)
+    .then(curso => {
+      this.setState({ cursos:[...this.state.cursos, curso]});
+      PopUp.exibeMensagem('success', "Curso adicionado com sucesso");
+    });
+    
+  }
+
+  // chamado depois que o componente é construído, faz uma requisição para a API e 
+  // altera o estado do componente com os novos dados, chamando novamente o render(), redesenhando a tela.
+  componentDidMount(){
+    ApiService.ListaCurso()
+      .then(res => {
+          this.setState({cursos: [...this.state.cursos, ...res.data]})
+      });
   }
 
   render(){
+
+    ApiService.ListaCurso()
+      .then(res => console.log(res.data));
+
     return (
       <Fragment>
         <Header />

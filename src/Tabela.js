@@ -21,7 +21,7 @@ const TableBody = props => {
                 <td>{linha.nome}</td>
                 <td>{linha.categoria}</td>
                 <td>{linha.cargaHoraria}</td>
-                <td><button className="waves-effect waves-light indigo lighten-2 btn" onClick = { () => { props.removeCurso(index) }}>Remover</button></td>
+                <td><button className="waves-effect waves-light indigo lighten-2 btn" onClick = { () => { props.removeCurso(linha.id) }}>Remover</button></td>
             </tr>
         )
     });
